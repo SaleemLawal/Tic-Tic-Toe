@@ -3,6 +3,7 @@ from random import randint
 
 
 def initialize_screen():
+    
     screen.fill("white")
     pg.display.flip()
     
