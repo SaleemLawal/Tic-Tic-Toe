@@ -11,8 +11,7 @@ def addXO(game, position):
         position (tuple):  x and y coordinates of where the player clicked
     """
     x, y = position[0], position[1]
-    # checks if position isnt occupied, if it isnt,
-    # it place the player at a symbol at a position place_at_location
+    # checks if position isnt occupied, if it isnt, it place the player at a symbol at a position place_at_location
     valid, place_at_location = game.updateTable(x, y)
     
     if valid:
@@ -21,7 +20,6 @@ def addXO(game, position):
         game.togglePlayer()
         pygame.display.set_caption(f"{game.current_player} turn")
 
-   
 
 
 def updateBoard(bool, game, mouse_position):
@@ -35,9 +33,11 @@ def updateBoard(bool, game, mouse_position):
     if bool:
         addXO(game, mouse_position)
     pygame.display.flip()
-    
+
+
 if __name__ == '__main__':
     mouse_position = (0,0)
+    
     #pygame setup
     pygame.init()
     pygame.display.set_caption("Tic Tac Toe")
@@ -50,11 +50,15 @@ if __name__ == '__main__':
     game = Game()
     while True:
         clicked = False
-        if game.checkWin():
-            exit()
+        win, positions, player_won = game.checkWin()
+        if win:
+            for pos in positions:
+                curr_img = pygame.image.load(f"assets/Winning_{player_won}.png")
+                screen.blit(curr_img, pos)
         elif game.TableFull():
             print("DRAW")
             exit()
+            
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
