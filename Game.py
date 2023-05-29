@@ -25,6 +25,7 @@ class Game():
                 if element is None:
                     return False
         return True
+        
                 
     def checkWin(self):
         
@@ -52,7 +53,7 @@ class Game():
                 positions = [self.place_locations[row][col] for row, col in combination]     
                 self.winner_found = True
                 return self.winner_found, positions, symbols[0]
-        return False, [], 'O'
+        return self.winner_found, [], 'O'
     
     
     def updateTable(self, x, y):
