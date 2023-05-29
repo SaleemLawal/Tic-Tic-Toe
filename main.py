@@ -38,7 +38,7 @@ class Logic():
             pg.display.set_caption(f"{self.players[0]} Goes first")
         else:
             pg.display.set_caption(f'{self.players[1]} Goes first')
-
+    
 
 
 def initialize_screen():
