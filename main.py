@@ -1,86 +1,46 @@
-import pygame as pg
-from random import randint  
-DEFAULT_IMAGE_SIZE = (100, 100)
-HEIGHT = 500
-WIDTH = 500
-
-class Logic():
-    def __init__(self) -> None:
-        self.win = False
-        self.board = [[None]*3, [None]*3, [None]*3]
-        self.players = ['X', 'O']
-        
-    def CheckWin(self):
-        '''
-          0  1  2
-        0 x, x, x
-        1 x, x, x
-        2 x, x, x 
-        '''
-        # check wins in each row
-        for row in range(0, 3):
-            if ((self.board[row][0] == self.board[row][1] == self.board[row][2]) and self.board[row][0] is not None):
-                self.win = True
-                break
-        # check win in each column
-        for col in range(0, 3):
-            if ((self.board[0][col] == self.board[1][col] == self.board[2][col]) and self.board[0][col] is not None):
-                self.win = True
-                break
-        #check win diagonally
-        if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[0][2] == self.board[1][1] == self.board[2][0])) 
-            and self.board[1][1] is not None):
-            self.win = True
-            
-    def turn(self):
-        num = randint(0, 1)
-        if num == 0:
-            pg.display.set_caption(f"{self.players[0]} Goes first")
-        else:
-            pg.display.set_caption(f'{self.players[1]} Goes first')
-    
+import pygame
+from Game import Game
+DIMENSION = (770, 770)
 
 
-def initialize_screen():
-    """
-        Creates the screen and draws the demarcating lines, 
-        updates the screen while the game is ongoing
-    """
-    width_sec = WIDTH//3
-    height_sec = HEIGHT//3
-    demarcation = [(width_sec, 0), (width_sec, HEIGHT), (width_sec * 2, HEIGHT), 
-                   (width_sec * 2, 0), (0, 0), (0, height_sec), (WIDTH,height_sec), (WIDTH, height_sec*2), (0, height_sec*2)] 
-    screen.fill("white")
-    pg.draw.lines(surface=screen, color="black", closed= False, points=demarcation)
+def addXO(game, position):
+    locations = [0, DIMENSION[0]//3, (DIMENSION[0]//3) *2]
+    x, y = position[0], position[1]
+    curr_img = pygame.image.load(f"assets/{game.current_player}.png")
+    game.updateTable(x, y)
+    game.checkTable()
+    screen.blit(curr_img, (x, y))
+    game.togglePlayer()
 
-    for pos in positions:
-        print(pos)
-        screen.blit(o_symbol, pos)
-    pg.display.flip()
-    
+
+def updateBoard(bool, game, mouse_position):
+    if bool:
+        addXO(game, mouse_position)
+    pygame.display.flip()
     
 if __name__ == '__main__':
-    positions = []
-    game_play = True
+    mouse_position = (0,0)
+    #pygame setup
+    pygame.init()
+    pygame.display.set_caption("Tic Tac Toe")
+    screen = pygame.display.set_mode(DIMENSION)
+    screen.fill(color=(216, 191, 216))
+    board = pygame.image.load("assets/Board.png")
+    screen.blit(source= board, dest=(0,0))
     
-    pg.init()
-    pg.display.set_caption('Tic Tac Toe')
-    screen = pg.display.set_mode(size=(WIDTH,HEIGHT))
-    x_symbol = pg.image.load("x.png")
-    x_symbol = pg.transform.scale(x_symbol, DEFAULT_IMAGE_SIZE)
-    o_symbol = pg.image.load("o.png")
-    o_symbol = pg.transform.scale(o_symbol, DEFAULT_IMAGE_SIZE)
-    
-    while game_play:
-        for event in pg.event.get():
-            if event.type == pg.MOUSEBUTTONUP:
-                positions.append(event.pos)
-                
-            if event.type == pg.QUIT:
-                game_play = False
-        initialize_screen() 
-
-   
-    pg.quit()    
+    # TicTacToe
+    game = Game()
+    while True:
+        # game.checkTable()
+        clicked = False
+        # if game.checkWin()[0]:
+        #     exit()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                clicked = True
+                mouse_position = pygame.mouse.get_pos()
+                print(mouse_position)
+        updateBoard(clicked, game, mouse_position)
         
-
