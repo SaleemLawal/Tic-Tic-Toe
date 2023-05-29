@@ -3,6 +3,9 @@ class Game():
         """default constructor
         """
         self.sections_found = []
+        self.place_locations =[[(50,50), (320, 40), (590, 50)], 
+                                [(50, 300), (320, 320), (590, 300)], 
+                                [(50, 590), (320, 570), (590, 590)]]
         self.winner_found = False
         self.current_player = 'X'
         self.table = [[None] * 3 for i in range(3)]
@@ -24,6 +27,7 @@ class Game():
         return True
                 
     def checkWin(self):
+        
         """checks after each player goes and checks for win
 
         Returns:
@@ -43,10 +47,13 @@ class Game():
 
         for combination in winning_combinations:
             symbols = [self.table[row][col] for row, col in combination]
-            if symbols[0] is not None and all(symbol == symbols[0] for symbol in symbols):
-                self.winner_found = True
-                return self.winner_found
             
+            if symbols[0] is not None and all(symbol == symbols[0] for symbol in symbols):
+                positions = [self.place_locations[row][col] for row, col in combination]     
+                self.winner_found = True
+                return self.winner_found, positions, symbols[0]
+        return False, [], 'O'
+    
     
     def updateTable(self, x, y):
         """update table based on the coordinates passed in
@@ -55,9 +62,7 @@ class Game():
             x (int): affects the column axis
             y (int): affects the row axis
         """
-        place_locations = [[(50,50), (320, 40), (590, 50)], 
-                           [(50, 300), (320, 320), (590, 300)], 
-                           [(50, 590), (320, 570), (590, 590)]]
+        
         if x < 256:
             col = 0
         elif x < 512:
@@ -75,6 +80,6 @@ class Game():
         if (row,col) not in self.sections_found:
             self.table[row][col] = self.current_player
             self.sections_found.append((row, col)) 
-            return True, place_locations[row][col]
+            return True, self.place_locations[row][col]
         return False, 0
         
