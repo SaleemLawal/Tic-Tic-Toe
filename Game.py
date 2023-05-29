@@ -1,24 +1,35 @@
 class Game():
     def __init__(self) -> None:
-        # self.player = ['X', 'O']
+        """default constructor
+        """
+        self.sections_found = []
         self.winner_found = False
         self.current_player = 'X'
-        self.table = [ [None] * 3 ] * 3
+        self.table = [[None] * 3 for i in range(3)]
 
     
     def togglePlayer(self):
+        """toggles the other player after a player makes their move
+        """
         if self.current_player == 'X':
             self.current_player = 'O'
         else:
             self.current_player = 'X'
-        # print(self.current_player)
-    
-    
-    def checkTable(self):
-        print(self.table)
-
         
+    def TableFull(self):
+        for row in self.table:
+            for element in row:
+                if element is None:
+                    return False
+        return True
+                
     def checkWin(self):
+        """checks after each player goes and checks for win
+
+        Returns:
+            _type_: returns a list containing the player if the game is won, 
+                    and the player that won
+        """
         winning_combinations = [
             [(0, 0), (1, 0), (2, 0)],
             [(0, 1), (1, 1), (2, 1)],
@@ -34,30 +45,19 @@ class Game():
             symbols = [self.table[row][col] for row, col in combination]
             if symbols[0] is not None and all(symbol == symbols[0] for symbol in symbols):
                 self.winner_found = True
-                return [self.winner_found, symbols[0]]
-        return [False]
-        # if (self.table[0][0] == self.table[1][0] == self.table[2][0]):
-        #     print('X win')
-        # elif (self.table[0][1] == self.table[1][1] == self.table[2][1]):
-        #     print()
-        # elif (self.table[0][2] == self.table[1][2] == self.table[2][2]):
-        #     print()
-        # elif (self.table[0][0] == self.table[0][1] == self.table[0][2]):
-        #     print()
-        # elif (self.table[1][0] == self.table[1][1] == self.table[1][2]):
-        #     print()
-        # elif (self.table[2][0] == self.table[2][1] == self.table[2][2]):
-        #     print()
-        # elif (self.table[0][0] == self.table[1][1] == self.table[2][2]):
-        #     print()
-        # elif (self.table[2][0] == self.table[1][1] == self.table[0][2]):
-        #     print()
-        if None not in self.table and not(self.winner_found):
-            print("DRAW")
+                return self.winner_found
             
     
     def updateTable(self, x, y):
-        print(x, y)
+        """update table based on the coordinates passed in
+
+        Args:
+            x (int): affects the column axis
+            y (int): affects the row axis
+        """
+        place_locations = [[(50,50), (320, 40), (590, 50)], 
+                           [(50, 300), (320, 320), (590, 300)], 
+                           [(50, 590), (320, 570), (590, 590)]]
         if x < 256:
             col = 0
         elif x < 512:
@@ -71,5 +71,10 @@ class Game():
             row = 1
         else:
             row = 2
-        self.table[row][col] = self.current_player
+            
+        if (row,col) not in self.sections_found:
+            self.table[row][col] = self.current_player
+            self.sections_found.append((row, col)) 
+            return True, place_locations[row][col]
+        return False, 0
         
