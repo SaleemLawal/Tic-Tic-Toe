@@ -33,8 +33,7 @@ if __name__ == '__main__':
     while True:
         # game.checkTable()
         clicked = False
-        # if game.checkWin()[0]:
-        #     exit()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
