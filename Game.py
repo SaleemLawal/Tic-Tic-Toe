@@ -72,26 +72,4 @@ class Game():
         else:
             row = 2
         self.table[row][col] = self.current_player
-
-        # # row 0
-        # if (x > 0 and x < loc1) and (y > 0 and y < loc1):
-        #     self.table[0][0] = self.current_player
-        # elif (x > loc1 and x < loc2) and (y > 0 and y < loc1):
-        #     self.table[0][1] = self.current_player
-        # elif (x > loc2 and x < maxDimension) and (y > 0 and y < loc1):
-        #     self.table[0][2] = self.current_player
-        # # row 1
-        # elif (x > 0 and x < loc1) and (y > loc1 and y < loc2):
-        #     self.table[1][0] = self.current_player
-        # elif (x > loc1 and x < loc2) and (y > loc1 and y < loc2):
-        #     self.table[1][1] = self.current_player
-        # elif (x > loc2 and x < maxDimension) and (y > loc1 and y < loc2):
-        #     self.table[1][2] = self.current_player
-        # # row 2
-        # elif (x > 0 and x < loc1) and (y > loc2 and y < maxDimension):
-        #     self.table[2][0] = self.current_player
-        # elif (x > loc1 and x < loc2) and (y > loc2 and y < maxDimension):
-        #     self.table[2][1] = self.current_player
-        # elif (x > loc2 and x < maxDimension) and (y > loc2 and y < maxDimension):
-        #     self.table[2][2] = self.current_player
         
